@@ -10,9 +10,7 @@ tx = 40;     % desplazamiento en x
 ty = -15;    % desplazamiento en y
 
 % --- 2) Matriz H canónica de traslación (afín: sin perspectiva)
-%     H = [1 0 tx;
-%          0 1 ty;
-%          0 0  1]
+
 H = [1 0 tx;
      0 1 ty;
      0 0  1];

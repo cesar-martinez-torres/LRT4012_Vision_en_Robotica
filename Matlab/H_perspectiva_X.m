@@ -11,9 +11,7 @@ clear; clc;
 p = 0.002;   % prueba con 0.001 ~ 0.005 (valores muy grandes distorsionan mucho)
 
 % --- 2) Matriz H proyectiva (perspectiva en X) respecto al ORIGEN
-%     H_px = [ 1   0   0
-%              0   1   0
-%              p   0   1 ]
+
 %     Ecuaciones:
 %        u = x
 %        v = y

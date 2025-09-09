@@ -10,9 +10,7 @@ theta_deg = 30;                  % grados
 theta = (pi/180) * theta_deg;    % a radianes 
 
 % --- 2) Matriz H de rotación alrededor del ORIGEN (0,0)
-%     H_rot = [ cosθ  -sinθ   0
-%               sinθ   cosθ   0
-%                 0      0    1 ]
+
 H = [ cos(theta)  -sin(theta)   0;
       sin(theta)   cos(theta)   0;
            0             0      1];

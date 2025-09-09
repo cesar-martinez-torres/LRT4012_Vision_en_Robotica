@@ -10,9 +10,7 @@ sx = 1.50;    % escala en x (sx>1 agranda, 0<sx<1 reduce)
 sy = 0.75;    % escala en y
 
 % --- 2) Matriz H de ESCALA alrededor del ORIGEN (0,0)
-%     H_scale = [ sx  0  0
-%                 0  sy  0
-%                 0   0  1 ]
+
 H = [ sx  0   0;
       0  sy   0;
       0   0   1];

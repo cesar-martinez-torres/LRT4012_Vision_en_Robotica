@@ -11,17 +11,13 @@ ky = -0.25;  % cizalla EN Y (v depende de x): v = y + ky*x
 
 % --- 2) Matrices H canónicas (afines: sin perspectiva, h31=h32=0)
 % Cizalla en X : desplaza X proporcionalmente a Y
-%   [1  kx  0
-%    0   1  0
-%    0   0  1]
+
 Hx = [1  kx  0;
       0   1  0;
       0   0  1];
 
 % Cizalla en Y : desplaza Y proporcionalmente a X
-%   [1   0  0
-%    ky  1  0
-%     0  0  1]
+
 Hy = [1   0  0;
       ky  1  0;
        0  0  1];
