@@ -4,3 +4,10 @@ lenna_clahe.png
 lenna_gray_eq.png
 /resp_matlab
 14_bordes.ipynb
+
+# Personal student work: keep the structure, ignore local contents
+student_work/*
+!student_work/README.txt
+!student_work/imagenes/
+student_work/imagenes/*
+!student_work/imagenes/README.txt

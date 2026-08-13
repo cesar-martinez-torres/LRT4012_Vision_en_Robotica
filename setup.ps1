@@ -116,6 +116,8 @@ Invoke-Checked -Command $VenvPython -Arguments @("-c", "import cv2, numpy, scipy
 
 Write-Host ""
 Write-Host "Setup completed successfully."
-Write-Host "Activate the environment with: .\.venv\Scripts\Activate.ps1"
-Write-Host "Start JupyterLab with:        jupyter lab"
-Write-Host "Select the kernel:            $KernelDisplayName"
+Write-Host "Open this folder in Visual Studio Code and select the following notebook kernel:"
+Write-Host "  $KernelDisplayName"
+Write-Host ""
+Write-Host "Optional - start JupyterLab directly with:"
+Write-Host "  .\.venv\Scripts\python.exe -m jupyter lab"
