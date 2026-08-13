@@ -1,61 +1,121 @@
-# Setup script for Windows (PowerShell)
-# Usage (PowerShell, inside this folder):
-#   Set-ExecutionPolicy -Scope CurrentUser RemoteSigned   # once
-#   .\setup.ps1
+# Robot Vision - Windows environment setup
+# Run from PowerShell with:
+# powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 
 $ErrorActionPreference = "Stop"
+Set-StrictMode -Version Latest
 
+Set-Location -LiteralPath $PSScriptRoot
+
+$RequiredPython = "3.13"
 $EnvName = ".venv"
-$KernelName = "cv-2025"
+$KernelName = "robot-vision-2026"
+$KernelDisplayName = "Python (Robot Vision 2026)"
+$VenvPath = Join-Path $PSScriptRoot $EnvName
+$VenvPython = Join-Path $VenvPath "Scripts\python.exe"
+
+function Test-PythonCandidate {
+    param(
+        [Parameter(Mandatory = $true)][string]$Command,
+        [string[]]$Arguments = @()
+    )
+
+    try {
+        $version = & $Command @Arguments -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}')" 2>$null
+        if ($LASTEXITCODE -ne 0 -or -not $version) {
+            return $null
+        }
+
+        $majorMinor = ($version.Trim().Split('.')[0..1] -join '.')
+        if ($majorMinor -ne $RequiredPython) {
+            return $null
+        }
+
+        return @{
+            Command = $Command
+            Arguments = $Arguments
+            Version = $version.Trim()
+        }
+    }
+    catch {
+        return $null
+    }
+}
 
 function Resolve-Python {
-    # Try 'py' launcher first
-    $py = Get-Command py -ErrorAction SilentlyContinue
-    if ($py) {
-        return @{ Cmd = "py"; Args = @("-3.12") }
+    $launcher = Get-Command py -ErrorAction SilentlyContinue
+    if ($launcher) {
+        $candidate = Test-PythonCandidate -Command $launcher.Source -Arguments @("-$RequiredPython")
+        if ($candidate) {
+            return $candidate
+        }
     }
-    # Fallback to 'python' on PATH
-    $pyth = Get-Command python -ErrorAction SilentlyContinue
-    if ($pyth) {
-        return @{ Cmd = "python"; Args = @() }
+
+    foreach ($name in @("python3.13", "python")) {
+        $command = Get-Command $name -ErrorAction SilentlyContinue
+        if ($command) {
+            $candidate = Test-PythonCandidate -Command $command.Source
+            if ($candidate) {
+                return $candidate
+            }
+        }
     }
-    throw "Python not found. Install Python 3.12 (winget install -e --id Python.Python.3.12) and re-run."
+
+    throw @"
+Python $RequiredPython was not found.
+Install Python $RequiredPython and make it available through the Python launcher or PATH.
+Suggested command:
+  winget install -e --id Python.Python.3.13
+Then close PowerShell, open it again, and rerun this script.
+"@
 }
 
-$pyInfo = Resolve-Python
-$Cmd = $pyInfo.Cmd
-$BaseArgs = $pyInfo.Args
+function Invoke-Checked {
+    param(
+        [Parameter(Mandatory = $true)][string]$Command,
+        [Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments
+    )
 
-# Get version
-$versionText = & $Cmd $BaseArgs -c "import sys; print('.'.join(map(str, sys.version_info[:3])))"
-Write-Host "Using Python:" $versionText
-$parts = $versionText.Split('.')
-if ([int]$parts[0] -lt 3 -or [int]$parts[1] -lt 10) {
-    throw "Python $versionText detected. Please install Python 3.12 and try again."
+    & $Command @Arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "Command failed with exit code ${LASTEXITCODE}: $Command $($Arguments -join ' ')"
+    }
 }
 
-# Create venv
-& $Cmd $BaseArgs -m venv $EnvName
+$pythonInfo = Resolve-Python
+Write-Host "Using Python $($pythonInfo.Version): $($pythonInfo.Command)"
 
-# Activate venv
-$activatePath = Join-Path $EnvName "Scripts\Activate.ps1"
-. $activatePath
+if (Test-Path -LiteralPath $VenvPython) {
+    $venvVersion = & $VenvPython -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"
+    if ($LASTEXITCODE -ne 0 -or $venvVersion.Trim() -ne $RequiredPython) {
+        throw @"
+The existing $EnvName environment was not created with Python $RequiredPython.
+Delete the $EnvName folder and run this script again.
+"@
+    }
+    Write-Host "Reusing the existing $EnvName environment."
+}
+else {
+    Write-Host "Creating $EnvName..."
+    $venvArguments = @($pythonInfo.Arguments) + @("-m", "venv", $VenvPath)
+    Invoke-Checked -Command $pythonInfo.Command -Arguments $venvArguments
+}
 
-# Upgrade pip/setuptools/wheel
-python -m pip install --upgrade pip setuptools wheel
+Write-Host "Updating packaging tools..."
+Invoke-Checked -Command $VenvPython -Arguments @("-m", "pip", "install", "--upgrade", "pip", "setuptools", "wheel")
 
-# Install requirements
-pip install --prefer-binary -r requirements.txt
+Write-Host "Installing course dependencies..."
+$requirementsPath = Join-Path $PSScriptRoot "requirements.txt"
+Invoke-Checked -Command $VenvPython -Arguments @("-m", "pip", "install", "--prefer-binary", "-r", $requirementsPath)
 
-# Register Jupyter kernel
-python -m ipykernel install --user --name $KernelName --display-name "Python (CV-2025)"
+Write-Host "Registering the Jupyter kernel..."
+Invoke-Checked -Command $VenvPython -Arguments @("-m", "ipykernel", "install", "--user", "--name", $KernelName, "--display-name", $KernelDisplayName)
 
-# Import test
-python -c "import sys; print('Python:', sys.version); \
-import traceback; \
-try:\n import cv2, numpy as np; print('OpenCV:', cv2.__version__); print('NumPy:', np.__version__); print('OK')\nexcept Exception as e:\n print('Import test failed:', e)"
+Write-Host "Running the import test..."
+Invoke-Checked -Command $VenvPython -Arguments @("-c", "import cv2, numpy, scipy, pandas, matplotlib, PIL, skimage; print('Python environment: OK'); print('OpenCV:', cv2.__version__); print('NumPy:', numpy.__version__)")
 
 Write-Host ""
-Write-Host "✅ Done!"
-Write-Host "To activate later:  .\.venv\Scripts\Activate.ps1"
-Write-Host "Then launch Jupyter Lab:  jupyter lab"
+Write-Host "Setup completed successfully."
+Write-Host "Activate the environment with: .\.venv\Scripts\Activate.ps1"
+Write-Host "Start JupyterLab with:        jupyter lab"
+Write-Host "Select the kernel:            $KernelDisplayName"
