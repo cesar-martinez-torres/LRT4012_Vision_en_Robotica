@@ -1,0 +1,76 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/robotis/turtlebot/protos/TurtleBot3Burger.proto"
+
+WorldInfo {
+  info [
+    "Seguimiento visual de una pelota roja con un robot diferencial."
+    "OpenCV segmenta en HSV, valida la forma y controla orientacion y distancia."
+  ]
+  title "Webots Visual Tracking Example"
+}
+Viewpoint {
+  orientation -0.43631205283563945 0.2707574430126094 0.8580921859588418 2.162987229816244
+  position 2.156624762995514 -3.9067206484330494 6.099611901250708
+}
+RectangleArena {
+  floorSize 3 3
+  floorAppearance PBRAppearance {
+    baseColor 0.45 0.45 0.45
+    roughness 1
+    metalness 0
+  }
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+TurtleBot3Burger {
+  hidden rotation_4 0.9999906836545637 -0.004316546797710844 5.274601714776403e-06 0.00774714970986447
+  controller "visual_tracker"
+  extensionSlot [
+    Camera {
+      name "camera"
+      translation 0.06 0 0.06
+      rotation 0 1 0 0.12
+      fieldOfView 1.1
+      width 320
+      height 240
+      near 0.03
+      children [
+        Shape {
+          appearance PBRAppearance {
+          }
+          geometry Box {
+            size 0.03 0.1 0.03
+          }
+        }
+      ]
+    }
+  ]
+}
+DEF BALL Solid {
+  translation 1 0 0.1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        metalness 0
+        normalMapFactor 0
+        occlusionMapStrength 0
+        emissiveIntensity 0
+      }
+      geometry Sphere {
+        radius 0.1
+        subdivision 4
+      }
+    }
+  ]
+}
+Robot {
+  controller "ball_supervisor"
+  supervisor TRUE
+}
