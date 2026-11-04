@@ -71,7 +71,7 @@ Se recomienda utilizar Git porque permite actualizar fácilmente el material del
 4. Pega la siguiente dirección del repositorio:
 
    ```text
-   https://github.com/cesar-martinez-torres/Vision_en_Robotica.git
+   https://github.com/cesar-martinez-torres/LRT4012_Vision_en_Robotica.git
    ```
 
 5. Selecciona una ubicación local permanente, como una carpeta dentro de `Documentos`, para guardar el repositorio. **No coloques el repositorio dentro de OneDrive, Google Drive, Dropbox ni otra carpeta sincronizada con la nube.** La sincronización puede bloquear o modificar archivos dentro del entorno virtual y provocar errores de instalación o ejecución.
@@ -80,7 +80,7 @@ Se recomienda utilizar Git porque permite actualizar fácilmente el material del
 
 ### Alternativa mediante ZIP
 
-Si no es posible clonar con Git, abre el [repositorio del curso](https://github.com/cesar-martinez-torres/Vision_en_Robotica) y selecciona **Code > Download ZIP**. Extrae el archivo ZIP en una ubicación permanente; no trabajes dentro del archivo comprimido.
+Si no es posible clonar con Git, abre el [repositorio del curso](https://github.com/cesar-martinez-torres/LRT4012_Vision_en_Robotica) y selecciona **Code > Download ZIP**. Extrae el archivo ZIP en una ubicación permanente; no trabajes dentro del archivo comprimido.
 
 La alternativa mediante ZIP no permite usar `git pull`. Para obtener nuevo material del curso, descarga y extrae una nueva copia del repositorio.
 
