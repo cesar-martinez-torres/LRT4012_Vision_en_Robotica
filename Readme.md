@@ -14,6 +14,8 @@ Aquí encontrarás los **códigos, ejemplos y materiales** desarrollados durante
 
 Consulta la [guía de instalación en español](README_INSTALL_ESP.md).
 
+Para las prácticas con redes neuronales, consulta la [guía del entorno de deep learning](deep_learning/README.md).
+
 ---
 
 ### 📂 Contenido del repositorio
