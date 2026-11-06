@@ -1,5 +1,3 @@
-# Dataset distributed separately
-data/
 
 # Training, evaluation, and export artifacts
 runs/
