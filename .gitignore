@@ -11,3 +11,19 @@ student_work/*
 !student_work/imagenes/
 student_work/imagenes/*
 !student_work/imagenes/README.txt
+
+# Deep-learning datasets, results, models, and local caches
+deep_learning/**/data/
+deep_learning/**/runs/
+deep_learning/**/__pycache__/
+deep_learning/**/.ipynb_checkpoints/
+deep_learning/**/*.py[cod]
+deep_learning/**/*.pth
+deep_learning/**/*.pt
+deep_learning/**/*.onnx
+deep_learning/**/*.ckpt
+deep_learning/**/*.h5
+deep_learning/**/*.tflite
+deep_learning/**/*.engine
+deep_learning/**/*_executed.ipynb
+deep_learning/**/events.out.tfevents.*

@@ -2,10 +2,10 @@
 
 Este entorno se utiliza para entrenar y evaluar redes neuronales de visión. Es independiente del entorno de visión clásica del curso.
 
-| Entorno | Uso | Versión de Python |
-|---|---|---|
-| `.venv` | Visión clásica, OpenCV y controladores ligeros de Webots | 3.13 |
-| `vision_robotica_dl` | Entrenamiento con PyTorch, redes convolucionales y transformers | 3.11 o 3.12 |
+| Entorno                | Uso                                                             | Versión de Python |
+| ---------------------- | --------------------------------------------------------------- | ------------------ |
+| `.venv`              | Visión clásica, OpenCV y controladores ligeros de Webots      | 3.13               |
+| `vision_robotica_dl` | Entrenamiento con PyTorch, redes convolucionales y transformers | 3.11 o 3.12        |
 
 No desinstales Python 3.13 ni elimines el entorno `.venv`.
 

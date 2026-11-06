@@ -1,0 +1,24 @@
+# Dataset distributed separately
+data/
+
+# Training, evaluation, and export artifacts
+runs/
+*.pth
+*.pt
+*.onnx
+*.ckpt
+*.h5
+*.tflite
+*.engine
+events.out.tfevents.*
+
+# Python and Jupyter local files
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+*_executed.ipynb
+
+# Logs
+*.log
