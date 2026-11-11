@@ -1,0 +1,98 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/robotis/turtlebot/protos/TurtleBot3Burger.proto"
+EXTERNPROTO "../protos/VisualCommandSign.proto"
+
+WorldInfo {
+  info [
+    "A seeded maze supplies a guaranteed route for visual command navigation."
+    "LRT4012 Robot Vision - Fall 2026"
+  ]
+  title "TurtleBot3 Burger - random visual-command track"
+  basicTimeStep 32
+}
+Viewpoint {
+  orientation -0.43631205283563945 0.2707574430126094 0.8580921859588418 2.162987229816244
+  position 1.9 -2.3 2.5
+}
+RectangleArena {
+  floorSize 5 5
+  floorAppearance PBRAppearance {
+    baseColor 0.46 0.48 0.50
+    roughness 1
+    metalness 0
+  }
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+DEF TRACK_ROOT Group {
+  children [
+  ]
+}
+DEF BURGER TurtleBot3Burger {
+  translation 0 0 0
+  rotation 0 0 1 0
+  name "burger random track"
+  controller "turtlebot_visual_commands"
+  controllerArgs [
+    "--forward-distance=0.42"
+    "--turn-angle=90"
+    "--stop-steps=24"
+  ]
+  extensionSlot [
+    InertialUnit {
+      name "navigation imu"
+    }
+    Receiver {
+      name "command receiver"
+      channel 22
+    }
+    Camera {
+      translation 0.06 0 0.06
+      rotation 0 1 0 -0.22
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.12 0.14 0.16
+            roughness 0.8
+            metalness 0
+          }
+          geometry Box {
+            size 0.03 0.1 0.03
+          }
+        }
+      ]
+      fieldOfView 1.1
+      width 224
+      height 224
+      near 0.03
+      noise 0.004
+    }
+    Emitter {
+      name "status emitter"
+      channel 21
+    }
+  ]
+}
+DEF SIGN VisualCommandSign {
+}
+Robot {
+  children [
+    Emitter {
+      name "command emitter"
+      channel 22
+    }
+    Receiver {
+      name "status receiver"
+      channel 21
+    }
+  ]
+  name "random track supervisor"
+  controller "random_track_supervisor"
+  supervisor TRUE
+}

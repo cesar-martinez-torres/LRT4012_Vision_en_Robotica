@@ -1,0 +1,4 @@
+; Use a lightweight Python installation with numpy and opencv-python.
+; Do not point this controller to the PyTorch training environment on Windows.
+[python]
+COMMAND = C:/path/to/python.exe
