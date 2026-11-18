@@ -1,0 +1,67 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/robotis/turtlebot/protos/TurtleBot3Burger.proto"
+
+WorldInfo {
+  title "SegFormer - TurtleBot fixed lane 2"
+  basicTimeStep 32
+  randomSeed 4012
+}
+Viewpoint {
+  orientation -0.347156805 0.169788771 0.922309019 2.294078626
+  position 7 -9 10
+}
+Background { skyColor [ 0.66 0.75 0.86 ] }
+DEF SUN DirectionalLight {
+  direction -0.5 -0.5 -1
+  intensity 0.9
+  ambientIntensity 0.5
+  castShadows TRUE
+}
+Solid {
+  translation 0 0 -0.05
+  name "ground"
+  children [
+    Shape {
+      appearance DEF GROUND_APPEARANCE PBRAppearance {
+        baseColor 0.28 0.39 0.25
+        roughness 1
+        metalness 0
+      }
+      geometry Box { size 14 14 0.1 }
+    }
+  ]
+  boundingObject Box { size 14 14 0.1 }
+}
+DEF TRACK_ROOT Group { children [ ] }
+DEF BURGER TurtleBot3Burger {
+  name "lane following Burger"
+  controller "turtlebot_lane_follower"
+  customData "2"
+  extensionSlot [
+    DEF LANE_CAMERA Camera {
+      translation 0.06 0 0.06
+      rotation 0 1 0 0.32
+      name "camera"
+      fieldOfView 1.1
+      width 320
+      height 192
+      near 0.03
+      far 12
+      noise 0.002
+    }
+    Display { name "vision dashboard" width 960 height 244 }
+    Receiver { name "lane receiver" channel 42 }
+    Emitter { name "lane emitter" channel 41 }
+  ]
+}
+Robot {
+  name "fixed lane evaluator"
+  supervisor TRUE
+  controller "fixed_lane_supervisor"
+  controllerArgs [ "--track=2" ]
+  children [
+    Emitter { name "lane emitter" channel 42 }
+    Receiver { name "lane receiver" channel 41 }
+  ]
+}

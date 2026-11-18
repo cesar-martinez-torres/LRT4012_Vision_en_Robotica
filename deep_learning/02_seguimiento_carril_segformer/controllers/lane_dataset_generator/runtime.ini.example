@@ -1,0 +1,3 @@
+; Python with numpy and opencv-python. Use the local interpreter path.
+[python]
+COMMAND = C:/path/to/python.exe

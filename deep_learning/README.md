@@ -96,3 +96,15 @@ Entorno listo: 6 de 6 pruebas aprobadas.
 - **Falla la instalación de paquetes:** verifica la conexión a Internet y ejecuta nuevamente el instalador.
 - **No aparece el kernel:** termina la instalación y reinicia Visual Studio Code.
 - **Memoria insuficiente en GPU durante prácticas posteriores:** reduce el tamaño del lote o utiliza CPU.
+
+## Prácticas de entrenamiento y despliegue
+
+| Ejemplo | Aplicación |
+|---|---|
+| [01: comandos visuales](01_comandos_visuales_webots/) | Clasificación con MobileNet y ejecución de maniobras. |
+| [02: seguimiento de carril](02_seguimiento_carril_segformer/) | Segmentación con SegFormer y seguimiento de pistas fijas. |
+| [03: detección de obstáculos](03_deteccion_obstaculos_yolo/) | Ajuste fino de YOLO y parada/reanudación del TurtleBot. |
+| [04: personas, cascos y chalecos](04_deteccion_epp_yolo/) | Dataset real, ajuste fino de YOLO, métricas y despliegue ONNX en Raspberry Pi. |
+
+Cada práctica conserva sus scripts, cuadernos y guía. Los datasets y pesos
+entrenados se distribuyen por separado y no se guardan en Git.

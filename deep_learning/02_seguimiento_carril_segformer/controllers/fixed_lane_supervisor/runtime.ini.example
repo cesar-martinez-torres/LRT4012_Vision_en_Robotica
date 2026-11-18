@@ -1,0 +1,3 @@
+[python]
+; Copy to runtime.ini and use a Python installation with numpy.
+COMMAND = C:/path/to/vision_robotica_dl/Scripts/python.exe
